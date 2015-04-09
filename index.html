@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Pebble MyLaps Playground</title>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" href="pebble.css">
+    </head>
+    <body class="container">
+        <h1>MyLaps on Pebble</h1>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Pebble Watch</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-pebble"  ng-controller="pebbleController">
+                            <tr>
+                                <td class="pebble-side">
+                                    <button pebble-button="back" class="btn"></button>
+                                    <i class="fa fa-lg" ng-class="{'fa-volume-up':vibes, 'fa-volume-off':!vibes}" ng-click="vibes=!vibes"></i>
+                                </td>
+                                <td class="pebble-main">
+                                    <div ng-repeat="name in pebble.viewNames" pebble-view="{{name}}"></div>
+                                </td>
+                                <td class="pebble-side">
+                                    <button pebble-button="up" class="btn"></button>
+                                    <button pebble-button="select" class="btn"></button>
+                                    <button pebble-button="down" class="btn"></button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Configuration</h3>
+                    </div>
+                    <div class="panel-body" ng-controller="configController">
+                        <form>
+                            <div class="form-group">
+                                <label for="trackid">Track ID</label>
+                                <input type="text" class="form-control" id="trackid" ng-model="config.trackid">
+                            </div>
+                            <div class="form-group">
+                                <label for="transponderid">Transponder ID</label>
+                                <input type="text" class="form-control" id="transponderid" ng-model="config.transponderid">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="panel panel-default" ng-controller="trackSimulationController">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Track Simulation</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="clearfix">
+                            <button class="btn btn-primary col-sm-2" ng-click="lap()">Lap</button>
+                            <button class="btn btn-warning col-sm-offset-1 col-sm-2" ng-click="reset()">Reset</button>
+                            <div class="col-sm-4 text-right sim-timer" ng-bind="thislap"></div>
+                        </div>
+                        <div ng-show="data.laps">
+                        <h4 class="laps-header"><span ng-show="data.active">Current</span><span ng-hide="data.active">Old</span> activity</h4>
+                         <table class="table table-condensed">
+                            <tr>
+                                <th class="text-right">Lap</th>
+                                <th class="text-right">Lap time</th>
+                                <th class="text-right">Total time</th>
+                            </tr>
+                            <tr ng-repeat="lap in data.laps | orderBy : '-totalTime' | limitTo : 3">
+                                <td class="text-right" ng-bind="data.laps.length - $index"></td>
+                                <td class="text-right" ng-bind="format(lap.lapTime)"></td>
+                                <td class="text-right" ng-bind="format(lap.totalTime)"></td>
+                            </tr>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/buzz/1.1.9/buzz.min.js"></script>
+        <script src="scripts/ngpebble.js"></script>
+        <script src="scripts/controllers.js"></script>
+        <script src="scripts/services.js"></script>
+        <script src="scripts/directives.js"></script>
+        <script src="app.js"></script>
+    </body>
+</html>

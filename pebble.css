@@ -1,0 +1,67 @@
+.pebble-side {
+	width: 10px;
+}
+
+.table-pebble {
+	width: 400px;
+}
+
+button[pebble-button] {
+	width: 10px;
+	height: 80px;
+	background-color: #424242;
+	margin: 10px 0;
+}
+
+button[pebble-button=back] {
+	margin-top: 40px;
+	margin-bottom: 80px;
+}
+
+button[pebble-button=select] {
+	height: 40px;
+	box-sizing: border-box;
+}
+
+div[pebble-view] {
+	height: 80px;
+	display: inline-block;
+	width: 100%;
+	padding: 4px;
+}
+
+div[pebble-view] > div {
+	margin: 4px;
+	border-radius: 4px;
+	padding: 4px;
+	background-color: #bdbdbd;
+	text-align: center;
+	height: 100%;
+}
+
+div[pebble-view=numlaps], div[pebble-view=count] {
+	width: 50%;
+}
+
+div[pebble-view] .header {
+	font-size: smaller;
+}
+
+div[pebble-view] .body {
+	font: 40px Consolas;
+}
+
+.sim-timer {
+	font: 24px Consolas;
+}
+
+.form-inline > div {
+	margin-left: 20px;
+	margin-right: 40px;
+}
+
+h4.laps-header {
+	font-size: 16px;
+	font-weight: bold;
+	margin-top: 20px;
+}
