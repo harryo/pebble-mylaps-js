@@ -51,7 +51,7 @@ function serialize(obj) {
  * @param  {object}   config   configuration info: transponder and track ID's
  */
 function myLapsFetcher(callback) {
-    this.url = host + '/server2.php';
+    this.url = host + '/server.php';
     this.lastUpdate = now();
     this.fetchId = 0;
     this.callback = callback;
