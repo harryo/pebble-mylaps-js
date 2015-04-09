@@ -1,4 +1,11 @@
-// Initial config info, will later be read from config or cookies
+/**
+ * Pebble MyLaps JavaScript
+ * includes classes:
+ * - myLapsFetcher: fetch info from MyLaps via proxy server
+ * - cPebble: interface with C program on Pebble (to be implemented)
+ * - jsPebble: implementation of JS processing of info
+ * - pebbleDevice: interface with Pebble buttons and window in JS
+ */
 var host = 'http://pebble.harryonline.net';
 var config;
 if (typeof require !== 'undefined') {
@@ -13,6 +20,21 @@ if (typeof require !== 'undefined') {
  */
 function now() {
     return new Date().getTime();
+}
+/**
+ * console.log with display of time
+ */
+function timelog() {
+    var currentTime = new Date();
+    var output = [currentTime.toTimeString().split(' ')[0] + (currentTime.getMilliseconds()/1000).toFixed(3).slice(1)];
+    for (var i = 0; i < arguments.length; i++) {
+        if (typeof arguments[i] == 'object') {
+            output.push(JSON.stringify(arguments[i]));
+        } else {
+            output.push(arguments[i]);
+        }
+    }
+    console.log(output.join(' '));
 }
 /**
  * Format time
@@ -111,11 +133,11 @@ myLapsFetcher.prototype.fetch = function() {
         if (self.fetchId === currentFetchId) {
             var result = JSON.parse(this.responseText);
             var callDelay = 1000; // Wait 1 sec for next call
-            console.log(new Date(), JSON.stringify(result));
+            timelog(result);
             if (result.event == 'lap') {
                 self.copyParams(result.data);
             } else {
-                callDelay = 10000;   // No laps retrieved, wait 10 sec before retrying
+                callDelay = 10000; // No laps retrieved, wait 10 sec before retrying
             }
             self.callback.call(result);
             setTimeout(function() {
@@ -244,6 +266,7 @@ jsPebble.prototype.process = function(result) {
                         break;
                     default:
                         this.device.vibrate('short');
+                        break;
                 }
             } else {
                 this.lapstogo = this.numlaps - this.startlap;
@@ -369,7 +392,7 @@ if (typeof require !== 'undefined') {
     Settings.config({
         url: configUrl(config)
     }, function(e) {
-        console.log('opening configurable');
+        console.log('Opening configurable');
     }, function(e) {
         console.log('Configured');
         // Show the parsed response
